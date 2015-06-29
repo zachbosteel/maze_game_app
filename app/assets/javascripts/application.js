@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require easeljs-0.8.1.min
+//= require ./games/game_window.js
