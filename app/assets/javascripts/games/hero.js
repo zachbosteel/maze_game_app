@@ -3,8 +3,7 @@
 var Container = createjs.Container
 
 var Hero = createSubclass(Container, 'Hero', {
-  initialize: Hero$initialize,
-  move: Hero$move
+  initialize: Hero$initialize
 });
 
 
@@ -15,6 +14,8 @@ function Hero$initialize(name, x, y) {
   this.y = y;
 
   setupDisplay.call(this);
+
+  this.on('tick', onTick);
 };
 
 
@@ -24,6 +25,10 @@ function setupDisplay(){
   this.addChild(this.body);
 }
 
-function Hero$move () {
-  console.log("Moving...");
-};
+function onTick(event){
+  var actions = actionService.get();
+
+  if (actions.moveright) this.x++;
+  if (actions.moveleft) this.x--;
+}
+

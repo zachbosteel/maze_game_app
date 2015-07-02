@@ -1,6 +1,7 @@
 'use strict';      
 
       function init() {
+        actionService.init(window);
         var stage = new createjs.Stage("main");
 
         var hero1 = new Hero('Hero 1', 50, 50);
