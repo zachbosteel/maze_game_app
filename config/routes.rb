@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   devise_for :players
-  get   "/"                  => 'games#home'
+  get   "/home"                  => 'games#home'
   get   "/games"             => 'games#index'
   post  "/games"             => 'games#create'
   get   "/games/:id"         => 'games#show'
