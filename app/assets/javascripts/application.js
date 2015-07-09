@@ -15,8 +15,8 @@
 //= require turbolinks
 //= require easeljs-0.8.1.min
 //= require ./games/create_subclass.js
-//= require ./games/actions.js
 //= require ./games/hero.js
+//= require ./games/actions.js
 //= require ./games/cell.js
 //= require ./games/grid.js
 //= require ./games/maze.js

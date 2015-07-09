@@ -1,13 +1,13 @@
 'use strict';
 
 var EventDispatcher = createjs.EventDispatcher
-var EaselEven = createjs.Event
+var EaselEvent = createjs.Event
 
 var controls = {
-  37: moveleft,
-  39: moveright,
-  38: moveup,
-  40: movedown
+  37: 'moveleft',
+  39: 'moveright',
+  38: 'moveup',
+  40: 'movedown'
 };
 
 var currentActions = {};
