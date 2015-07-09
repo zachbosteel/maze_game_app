@@ -8,15 +8,14 @@ var Cell = createSubclass(Container, 'Cell', {
   unlink: Cell$unlink,
   links: Cell$links,
   linked: Cell$linked,
-  neighbors: Cell$neighbors
+  neighbors: Cell$neighbors,
+  draw: Cell$draw
 });
 
 function Cell$initialize(row, column) {
   this.row = row;
   this.column = column;
   this.linklist = {};
-
-  this.bidirectional = true
 
   this.north = false;
   this.south = false;
@@ -75,4 +74,8 @@ function Cell$neighbors(){
     list.push(this.west);
   };
   return list
+};
+
+function Cell$draw(){
+
 };

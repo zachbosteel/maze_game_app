@@ -4,6 +4,8 @@
         actionService.init(window);
         var stage = new createjs.Stage("main");
 
+        var canvas = stage.canvas
+
         var world = new createjs.Container();
         world.x = 0
         world.y = 0
@@ -14,10 +16,10 @@
 
         var _W = 500
           , _H = 700
-          , xCentre = _W / 2
-          , yCentre = _H / 2
-          , wWidth = 2000
-          , wHeight = 2000;
+          , xCentre = _W/2
+          , yCentre = _H/2
+          , wWidth = 1680
+          , wHeight = 1050;
 
         console.log(hero)
 
@@ -25,6 +27,7 @@
         createjs.Ticker.setFPS(60);
         createjs.Ticker.addEventListener("tick", function (event) { 
           stage.update();
+          updateBackground();
           cameraMove();
         });
 
@@ -46,5 +49,13 @@
             else
               world.y = 0;
           }
+        };
+
+        function updateBackground() {
+          var x = world.x
+            , y = world.y;
+
+          canvas.style.backgroundPositionX = x + 'px';
+          canvas.style.backgroundPositionY = y + 'px';
         };
       };
