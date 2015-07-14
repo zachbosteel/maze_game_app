@@ -1,4 +1,4 @@
-'use strict' ;
+'use strict';
 
 var Container = createjs.Container
 
@@ -12,15 +12,28 @@ var Cell = createSubclass(Container, 'Cell', {
   draw: Cell$draw
 });
 
-function Cell$initialize(row, column) {
+function Cell$initialize(row, column, name, grid) {
+  Container.prototype.initialize.apply(this, arguments);
   this.row = row;
   this.column = column;
+  this.width = 80;
+  this.height = 80;
+  this.x = row * 80; 
+  this.y = column * 80;
+  this.name = name;
   this.linklist = {};
+  var parentGrid = grid;
+
+  this.setBounds(this.x, this.y, this.height, this.width);
+
+  parentGrid.addChild(this);
 
   this.north = false;
   this.south = false;
   this.east = false;
   this.west = false;
+
+  var cell = this;
 };
 
 function Cell$lLink(cell) {
@@ -77,5 +90,5 @@ function Cell$neighbors(){
 };
 
 function Cell$draw(){
-
+  
 };

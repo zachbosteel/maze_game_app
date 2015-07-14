@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require easeljs-0.8.1.min
+//= require preloadjs-0.6.1.min
 //= require ./games/create_subclass.js
 //= require ./games/hero.js
 //= require ./games/actions.js

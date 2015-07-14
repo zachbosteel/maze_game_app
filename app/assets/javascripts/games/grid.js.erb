@@ -1,0 +1,123 @@
+'use strict';
+
+var Container = createjs.Container
+
+var Grid = createSubclass(Container, 'Grid', {
+  initialize: Grid$initialize,
+  brackets: Grid$brackets,
+  randomCell: Grid$randomCell,
+  size: Grid$size,
+  eachRow: Grid$eachRow,
+  eachCell: Grid$eachCell,
+  drawCells: Grid$drawCells
+});
+
+function Grid$initialize(rows, columns){
+    Container.prototype.initialize.apply(this, arguments);
+    this.gridRows = rows;
+    this.columns = columns;
+    var grid = this;
+    this.preparedGrid = prepareGrid.call(this);
+    configureCells.call(this);
+};
+
+
+
+function prepareGrid(){
+  var arrayRows = new Array(parseInt(this.gridRows));
+  for (var row = 0; row <= parseInt(this.gridRows); row++){
+    var arrayColumns = new Array(parseInt(this.columns))
+    for (var column = 0; column <= parseInt(this.columns); column++){
+      var cell = new Cell(row, column, 'cell', this);
+      arrayColumns[column] = cell;
+    };
+    arrayRows[row] = arrayColumns;
+  };
+  return arrayRows;
+};
+
+
+function Grid$eachRow(block){
+  for (var row = 0; row <= this.prepardeGrid.length; row++){
+    //placeholder!!!!!
+    return true
+  };
+};
+
+function Grid$eachCell(){
+  for (var row = 0; row <= this.prepardeGrid.length - 1; row++){
+    for (var cell = 0; cell <= row.length - 1; cell++){
+      var cell = preparedGrid[row][column];
+    };
+  };  
+};
+
+function configureCells(){
+  for (var row = 0; row <= this.gridRows; row++){
+    var rowArray = this.preparedGrid[row];
+    for (var column = 0; column <= this.columns; column++){
+      var cell = rowArray[column];
+      if (row > 0){
+        cell.north = this.preparedGrid[row - 1][column]
+      };
+      if (row < this.gridRows){   
+        cell.south = this.preparedGrid[row + 1][column]
+      };
+      if (column > 0){
+        cell.west = this.preparedGrid[row][column - 1]
+      };
+      if (column < this.columns){
+        cell.east = this.preparedGrid[row][column + 1]
+      };
+    };
+  };
+};
+
+function Grid$brackets(row, column){
+  if (row > 0 && row < grid.gridRows - 1){
+    //using this as an Unless statement
+  } else {
+    return nil; 
+  };
+  if (column > 0 && column < grid.columns - 1){
+    //using this as an Unless statement
+  } else {
+    return nil;
+  };
+  return grid.preparedGrid[row][column];
+};
+
+function Grid$size(){
+  return grid.gridRows * grid.columns;
+};
+
+function Grid$randomCell(){
+  randomRow = Math.floor((Math.random() * grid.gridRows) + 1);
+  randomColumn = Math.floor((Math.random() * grid.columns) + 1);
+  return grid[randomRow, randomColumn];
+};
+
+function preload(grid, cell){
+  var preload = new createjs.LoadQueue(true);
+  var cell = cell
+  preload.addEventListener("complete", handleComplete);
+  preload.loadManifest([
+    {id:"floor", src:"<%= image_path('wood-floor-tile-1.png')%>"}
+  ]);
+  function handleComplete() {
+    var testTile = preload.getResult("floor");
+    var bitmap = new createjs.Bitmap(testTile);
+    bitmap.x = cell.x
+    bitmap.y = cell.y
+    grid.addChildAt(bitmap, 0);
+  };
+};
+
+function Grid$drawCells(grid){
+  for (var row = 0; row <= grid.preparedGrid.length - 1; row++){
+    for (var column = 0; column <= grid.preparedGrid[row].length - 1; column++){
+      var cell = grid.preparedGrid[row][column];
+      preload(grid, cell);
+    };
+  }; 
+};

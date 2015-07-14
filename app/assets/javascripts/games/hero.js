@@ -22,7 +22,7 @@ function Hero$initialize(name, x, y) {
 
 function _setupDisplay(){
   this.body = new createjs.Shape();
-  this.body.graphics.beginFill('green').drawRect(0, 0, 50, 50);
+  this.body.graphics.beginFill('green').drawRect(0, 0, 20, 20);
   this.addChild(this.body);
 }
 

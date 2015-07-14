@@ -4,6 +4,7 @@
         actionService.init(window);
         var stage = new createjs.Stage("main");
 
+
         var canvas = stage.canvas
 
         var world = new createjs.Container();
@@ -14,14 +15,27 @@
         var hero = new Hero('Hero 1', 50, 50);
         world.addChild(hero);
 
+        var grid = new Grid(20, 20);
+        grid.x = 0
+        grid.y = 0
+        grid.width = grid.gridRows*80;
+        grid.height = grid.columns*80;
+        world.addChildAt(grid, 0)
+
+        
+
+
+
+        //preload(grid, grid.preparedGrid[0][1]);
+
+        grid.drawCells(grid);
+
         var _W = 500
-          , _H = 700
+          , _H = 500
           , xCentre = _W/2
           , yCentre = _H/2
-          , wWidth = 1680
-          , wHeight = 1050;
-
-        console.log(hero)
+          , wWidth = grid.gridRows*80
+          , wHeight = grid.columns*80;
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.setFPS(60);
