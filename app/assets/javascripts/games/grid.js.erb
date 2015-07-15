@@ -45,9 +45,10 @@ function Grid$eachRow(block){
 };
 
 function Grid$eachCell(){
-  for (var row = 0; row <= this.prepardeGrid.length - 1; row++){
-    for (var cell = 0; cell <= row.length - 1; cell++){
+  for (var row = 0; row < this.prepardeGrid.length; row++){
+    for (var cell = 0; cell < row.length; cell++){
       var cell = preparedGrid[row][column];
+
     };
   };  
 };
@@ -92,9 +93,9 @@ function Grid$size(){
 };
 
 function Grid$randomCell(){
-  randomRow = Math.floor((Math.random() * grid.gridRows) + 1);
-  randomColumn = Math.floor((Math.random() * grid.columns) + 1);
-  return grid[randomRow, randomColumn];
+  var randomRow = Math.floor((Math.random() * this.gridRows) + 1);
+  var randomColumn = Math.floor((Math.random() * this.columns) + 1);
+  return this.preparedGrid[randomRow][randomColumn];
 };
 
 function preload(grid, cell){
@@ -102,16 +103,51 @@ function preload(grid, cell){
   var cell = cell
   preload.addEventListener("complete", handleComplete);
   preload.loadManifest([
-    {id:"floor", src:"<%= image_path('wood-floor-tile-1.png')%>"}
+    {id:"floor", src:"<%= image_path('wood-floor-tile-1.png')%>"},
+    {id:"eastwall", src:"<%= image_path('eastwall.png')%>"},
+    {id:"westwall", src:"<%= image_path('westwall.png')%>"},
+    {id:"northwall", src:"<%= image_path('northwall.png')%>"},
+    {id:"southwall", src:"<%= image_path('southwall.png')%>"}
   ]);
   function handleComplete() {
-    var testTile = preload.getResult("floor");
-    var bitmap = new createjs.Bitmap(testTile);
-    bitmap.x = cell.x
-    bitmap.y = cell.y
-    grid.addChildAt(bitmap, 0);
-  };
+  var testTile = preload.getResult("floor");
+  var wall1 = preload.getResult("eastwall");
+  var wall2 = preload.getResult("westwall");
+  var wall3 = preload.getResult("northwall");
+  var wall4 = preload.getResult("southwall");
+  var floor = new createjs.Bitmap(testTile);
+  floor.x = cell.x
+  floor.y = cell.y
+  console.log(cell.linklist);
+  grid.addChildAt(floor, 0);
+  if (!cell.linked(cell.north)){
+    var northwall = new createjs.Bitmap(wall3);
+    northwall.x = cell.x
+    northwall.y = cell.y
+    grid.addChildAt(northwall, 1);
+  }
+  if (!cell.linked(cell.south)){
+    var southwall = new createjs.Bitmap(wall4);
+    southwall.x = cell.x
+    southwall.y = cell.y
+    grid.addChildAt(southwall, 1);
+  }
+  if (!cell.linked(cell.east)){
+    var eastwall = new createjs.Bitmap(wall1);
+    eastwall.x = cell.x
+    eastwall.y = cell.y
+    grid.addChildAt(eastwall, 1);
+  }
+  if (!cell.linked(cell.west)){
+    var westwall = new createjs.Bitmap(wall2);
+    westwall.x = cell.x
+    westwall.y = cell.y
+    grid.addChildAt(westwall, 1);
+  }
+}
 };
+  
+
 
 function Grid$drawCells(grid){
   for (var row = 0; row <= grid.preparedGrid.length - 1; row++){

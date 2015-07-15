@@ -6,7 +6,7 @@ var Cell = createSubclass(Container, 'Cell', {
   initialize: Cell$initialize,
   lLink: Cell$lLink,
   unlink: Cell$unlink,
-  links: Cell$links,
+  lLinks: Cell$links,
   linked: Cell$linked,
   neighbors: Cell$neighbors,
   draw: Cell$draw
@@ -21,7 +21,8 @@ function Cell$initialize(row, column, name, grid) {
   this.x = row * 80; 
   this.y = column * 80;
   this.name = name;
-  this.linklist = {};
+  this.visited = false;
+  this.linklist = [];
   var parentGrid = grid;
 
   this.setBounds(this.x, this.y, this.height, this.width);
@@ -36,14 +37,13 @@ function Cell$initialize(row, column, name, grid) {
   var cell = this;
 };
 
-function Cell$lLink(cell) {
-  var bidirectional = true
-  this.linklist[cell] = true;
+function Cell$lLink(cell, bidirectional) {
+  var bidirectional = bidirectional;
+  this.linklist.push(cell);
   if (bidirectional){
-    cell.lLink(this)
-    bidirectional = false
-  }
-  return this
+    cell.lLink(this, false)
+  };
+  return this;
 };
 
 function Cell$unlink(cell) {
@@ -58,14 +58,14 @@ function Cell$unlink(cell) {
 
 function Cell$links(){
   links=[]
-  for (var key in this.linklist){
-    links.push(key);
+  for (var link = 0; link < this.linklist.length; link++){
+    links.push(link);
   }
   return links
 };
 
 function Cell$linked(cell){
-  if (cell in this.linklist){
+  if (this.linklist[cell] != -1){
     return true;
   } else {
     return false;
