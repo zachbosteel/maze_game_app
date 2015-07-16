@@ -18,11 +18,13 @@
         var grid = new Grid(20, 20);
         grid.x = 0
         grid.y = 0
-        grid.width = grid.gridRows*80;
-        grid.height = grid.columns*80;
+        grid.width = (grid.gridRows+1)*80;
+        grid.height = (grid.columns+1)*80;
         world.addChildAt(grid, 0)
 
-        huntAndKill(grid);
+        sidewinder(grid);
+
+        //huntAndKill(grid);
 
         grid.drawCells(grid);
 

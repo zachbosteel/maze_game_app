@@ -18,8 +18,8 @@ function Cell$initialize(row, column, name, grid) {
   this.column = column;
   this.width = 80;
   this.height = 80;
-  this.x = row * 80; 
-  this.y = column * 80;
+  this.x = column * 80; 
+  this.y = row * 80;
   this.name = name;
   this.visited = false;
   this.linklist = [];
@@ -37,13 +37,9 @@ function Cell$initialize(row, column, name, grid) {
   var cell = this;
 };
 
-function Cell$lLink(cell, bidirectional) {
-  var bidirectional = bidirectional;
+function Cell$lLink(cell) {
   this.linklist.push(cell);
-  if (bidirectional){
-    cell.lLink(this, false)
-  };
-  return this;
+  cell.linklist.push(this);
 };
 
 function Cell$unlink(cell) {
@@ -65,7 +61,8 @@ function Cell$links(){
 };
 
 function Cell$linked(cell){
-  if (this.linklist[cell] != -1){
+  console.log(this.linklist)
+  if (this.linklist[cell] !== -1){
     return true;
   } else {
     return false;

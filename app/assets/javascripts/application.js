@@ -20,5 +20,5 @@
 //= require ./games/actions.js
 //= require ./games/cell.js
 //= require ./games/grid.js
-//= require ./games/huntandkill.js
+//= require ./games/sidewinder.js
 //= require ./games/game_window.js

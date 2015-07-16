@@ -118,31 +118,32 @@ function preload(grid, cell){
   var floor = new createjs.Bitmap(testTile);
   floor.x = cell.x
   floor.y = cell.y
-  console.log(cell.linklist);
   grid.addChildAt(floor, 0);
-  if (!cell.linked(cell.north)){
+  if (!cell.north || cell.linklist.indexOf(cell.north) === -1){
     var northwall = new createjs.Bitmap(wall3);
     northwall.x = cell.x
     northwall.y = cell.y
     grid.addChildAt(northwall, 1);
   }
-  if (!cell.linked(cell.south)){
+  if (!cell.south || cell.linklist.indexOf(cell.south) === -1){
     var southwall = new createjs.Bitmap(wall4);
     southwall.x = cell.x
     southwall.y = cell.y
-    grid.addChildAt(southwall, 1);
+    grid.addChildAt(southwall, 2);
   }
-  if (!cell.linked(cell.east)){
+  if (!cell.east || cell.linklist.indexOf(cell.east) === -1){
+    console.log("Drawing east wall of " + cell.row +" "+ cell.column);
     var eastwall = new createjs.Bitmap(wall1);
     eastwall.x = cell.x
     eastwall.y = cell.y
-    grid.addChildAt(eastwall, 1);
+    grid.addChildAt(eastwall, 3);
   }
-  if (!cell.linked(cell.west)){
+  if (!cell.west || cell.linklist.indexOf(cell.west) === -1){ 
+    console.log("Drawing west wall of " + cell.row +" "+ cell.column);
     var westwall = new createjs.Bitmap(wall2);
     westwall.x = cell.x
     westwall.y = cell.y
-    grid.addChildAt(westwall, 1);
+    grid.addChildAt(westwall, 4);
   }
 }
 };
@@ -150,9 +151,10 @@ function preload(grid, cell){
 
 
 function Grid$drawCells(grid){
-  for (var row = 0; row <= grid.preparedGrid.length - 1; row++){
-    for (var column = 0; column <= grid.preparedGrid[row].length - 1; column++){
-      var cell = grid.preparedGrid[row][column];
+  for (var row = 0; row < grid.preparedGrid.length; row++){
+    var rowArray = grid.preparedGrid[parseInt(row)]
+    for (var column = 0; column < rowArray.length; column++){
+      var cell = grid.preparedGrid[parseInt(row)][parseInt(column)];
       preload(grid, cell);
     };
   }; 
