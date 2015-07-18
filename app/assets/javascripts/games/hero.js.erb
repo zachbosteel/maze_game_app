@@ -51,23 +51,28 @@ function onTick(event){
     var currentWall = walls[wall];
     var intersection = ndgmr.checkPixelCollision(currentWall, this.body)
     if (intersection){
-      if (actions.moveright && intersection.x > this.x){ 
-        this.x -= 7; 
-        actions.moveright = false;
+      console.log("collision!");
+      if (actions.moveright && currentWall.x + 80 > this.x){ 
+        console.log("collision to the right!")
+        this.x -= 9; 
+        delete actions.moveright
       }
-      if (actions.moveleft && intersection.x < this.x){ 
-        this.x +=7;
-        actions.moveleft = false;
+      if (actions.moveleft && currentWall.x < this.x){ 
+        console.log("collision to the left!")
+        this.x +=9;
+        delete actions.moveleft
       };
-      if (actions.moveup && intersection.y < this.y) {
-        this.y +=7;
-        actions.moveup = false;
+      if (actions.moveup && currentWall.y < this.y) {
+        console.log("collision above!")
+        this.y +=9;
+        delete actions.moveup
       }
-      if (actions.movedown && intersection.y + intersection.height > this.y) {
-        this.y -=7;
-        actions.movedown = false;
+      if (actions.movedown && currentWall.y + 80 > this.y) {
+        console.log("collision below!")
+        this.y -=9;
+        delete actions.movedown
       };
-    }
+    } 
   }
 
   if (this.x === this.wWidth - this.width) {
@@ -85,6 +90,13 @@ function onTick(event){
   if (this.y === this.wHeight - this.height) {
     this.y -=7;
     actions.movedown = false;
+  }
+
+  if (this.x < 0 || this.x > this.wWidth){
+    this.x = this.x * -1;
+  }
+  if (this.y < 0 || this.y > this.wHeight){
+    this.y = this.y * -1;
   }
 
 }

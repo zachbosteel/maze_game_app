@@ -56,7 +56,7 @@
           , wWidth = (grid.gridRows+1)*80
           , wHeight = (grid.columns+1)*80;
 
-        var hero = new Hero('Hero 1', 20, 20, wWidth, wHeight);
+        var hero = new Hero('Hero 1', 20, 20, wWidth, wHeight, walls);
         world.addChild(hero);
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
