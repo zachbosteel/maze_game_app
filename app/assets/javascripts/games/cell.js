@@ -25,8 +25,6 @@ function Cell$initialize(row, column, name, grid) {
   this.linklist = [];
   var parentGrid = grid;
 
-  this.setBounds(this.x, this.y, this.height, this.width);
-
   parentGrid.addChild(this);
 
   this.north = false;

@@ -1,0 +1,91 @@
+'use strict';
+
+var Container = createjs.Container
+var EventDispatcher = createjs.EventDispatcher
+var EaselEvent = createjs.Event
+
+var Hero = createSubclass(Container, 'Hero', {
+  initialize: Hero$initialize
+});
+
+
+function Hero$initialize(name, x, y, wWidth, wHeight) {
+  Container.prototype.initialize.apply(this, arguments);
+  this.name = name;
+  this.x = x;
+  this.y = y;
+  this.radius = 10;
+  this.wWidth = wWidth;
+  this.wHeight = wHeight;
+
+  _setupDisplay.call(this);
+  _setupProperties.call(this);
+
+  this.on('tick', onTick);
+};
+
+
+function _setupDisplay(){
+  this.body = new createjs.Bitmap("<%= image_path('Carbuncle2.gif')%>")
+  this.body.x = this.x - 10;
+  this.body.y = this.y - 10;
+  this.addChild(this.body);
+}
+
+function _setupProperties(){
+  this.name = 'hero';
+  this.inertia = 0;
+};
+
+function onTick(event){
+  var actions = actionService.get();
+
+  var speed = 5;
+
+  if (actions.moveright) this.x += speed;
+  if (actions.moveleft) this.x -= speed;
+  if (actions.moveup) this.y -= speed;
+  if (actions.movedown) this.y += speed;
+
+  for (var wall = 0; wall < walls.length; wall++){
+    var currentWall = walls[wall];
+    var intersection = ndgmr.checkPixelCollision(currentWall, this.body)
+    if (intersection){
+      if (actions.moveright && intersection.x > this.x){ 
+        this.x -= 7; 
+        actions.moveright = false;
+      }
+      if (actions.moveleft && intersection.x < this.x){ 
+        this.x +=7;
+        actions.moveleft = false;
+      };
+      if (actions.moveup && intersection.y < this.y) {
+        this.y +=7;
+        actions.moveup = false;
+      }
+      if (actions.movedown && intersection.y + intersection.height > this.y) {
+        this.y -=7;
+        actions.movedown = false;
+      };
+    }
+  }
+
+  if (this.x === this.wWidth - this.width) {
+    this.x -= 7;
+    actions.moveright = false;
+  }
+  if (this.x === this.width) {
+    this.x +=7;
+    actions.moveleft = false;
+  }
+  if (this.y === this.height) {
+    this.y +=7;
+    actions.moveup = false;
+  }
+  if (this.y === this.wHeight - this.height) {
+    this.y -=7;
+    actions.movedown = false;
+  }
+
+}
+

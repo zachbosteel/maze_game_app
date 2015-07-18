@@ -1,14 +1,12 @@
 'use strict';
 
+
 var Container = createjs.Container
+var walls = [];
 
 var Grid = createSubclass(Container, 'Grid', {
   initialize: Grid$initialize,
-  brackets: Grid$brackets,
   randomCell: Grid$randomCell,
-  size: Grid$size,
-  eachRow: Grid$eachRow,
-  eachCell: Grid$eachCell,
   drawCells: Grid$drawCells
 });
 
@@ -24,9 +22,9 @@ function Grid$initialize(rows, columns){
 
 
 function prepareGrid(){
-  var arrayRows = new Array(parseInt(this.gridRows));
+  var arrayRows = new Array(parseInt(this.gridRows-1));
   for (var row = 0; row <= parseInt(this.gridRows); row++){
-    var arrayColumns = new Array(parseInt(this.columns))
+    var arrayColumns = new Array(parseInt(this.columns-1))
     for (var column = 0; column <= parseInt(this.columns); column++){
       var cell = new Cell(row, column, 'cell', this);
       arrayColumns[column] = cell;
@@ -34,23 +32,6 @@ function prepareGrid(){
     arrayRows[row] = arrayColumns;
   };
   return arrayRows;
-};
-
-
-function Grid$eachRow(block){
-  for (var row = 0; row <= this.prepardeGrid.length; row++){
-    //placeholder!!!!!
-    return true
-  };
-};
-
-function Grid$eachCell(){
-  for (var row = 0; row < this.prepardeGrid.length; row++){
-    for (var cell = 0; cell < row.length; cell++){
-      var cell = preparedGrid[row][column];
-
-    };
-  };  
 };
 
 function configureCells(){
@@ -67,29 +48,11 @@ function configureCells(){
       if (column > 0){
         cell.west = this.preparedGrid[row][column - 1]
       };
-      if (column < this.columns){
+      if (column <= this.columns){
         cell.east = this.preparedGrid[row][column + 1]
       };
     };
   };
-};
-
-function Grid$brackets(row, column){
-  if (row > 0 && row < grid.gridRows - 1){
-    //using this as an Unless statement
-  } else {
-    return nil; 
-  };
-  if (column > 0 && column < grid.columns - 1){
-    //using this as an Unless statement
-  } else {
-    return nil;
-  };
-  return grid.preparedGrid[row][column];
-};
-
-function Grid$size(){
-  return grid.gridRows * grid.columns;
 };
 
 function Grid$randomCell(){
@@ -98,64 +61,51 @@ function Grid$randomCell(){
   return this.preparedGrid[randomRow][randomColumn];
 };
 
-function preload(grid, cell){
-  var preload = new createjs.LoadQueue(true);
-  var cell = cell
-  preload.addEventListener("complete", handleComplete);
-  preload.loadManifest([
-    {id:"floor", src:"<%= image_path('wood-floor-tile-1.png')%>"},
-    {id:"eastwall", src:"<%= image_path('eastwall.png')%>"},
-    {id:"westwall", src:"<%= image_path('westwall.png')%>"},
-    {id:"northwall", src:"<%= image_path('northwall.png')%>"},
-    {id:"southwall", src:"<%= image_path('southwall.png')%>"}
-  ]);
-  function handleComplete() {
-  var testTile = preload.getResult("floor");
-  var wall1 = preload.getResult("eastwall");
-  var wall2 = preload.getResult("westwall");
-  var wall3 = preload.getResult("northwall");
-  var wall4 = preload.getResult("southwall");
-  var floor = new createjs.Bitmap(testTile);
-  floor.x = cell.x
-  floor.y = cell.y
-  grid.addChildAt(floor, 0);
-  if (!cell.north || cell.linklist.indexOf(cell.north) === -1){
-    var northwall = new createjs.Bitmap(wall3);
-    northwall.x = cell.x
-    northwall.y = cell.y
-    grid.addChildAt(northwall, 1);
-  }
-  if (!cell.south || cell.linklist.indexOf(cell.south) === -1){
-    var southwall = new createjs.Bitmap(wall4);
-    southwall.x = cell.x
-    southwall.y = cell.y
-    grid.addChildAt(southwall, 2);
-  }
-  if (!cell.east || cell.linklist.indexOf(cell.east) === -1){
-    console.log("Drawing east wall of " + cell.row +" "+ cell.column);
-    var eastwall = new createjs.Bitmap(wall1);
-    eastwall.x = cell.x
-    eastwall.y = cell.y
-    grid.addChildAt(eastwall, 3);
-  }
-  if (!cell.west || cell.linklist.indexOf(cell.west) === -1){ 
-    console.log("Drawing west wall of " + cell.row +" "+ cell.column);
-    var westwall = new createjs.Bitmap(wall2);
-    westwall.x = cell.x
-    westwall.y = cell.y
-    grid.addChildAt(westwall, 4);
-  }
-}
-};
-  
-
-
-function Grid$drawCells(grid){
+function Grid$drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
   for (var row = 0; row < grid.preparedGrid.length; row++){
     var rowArray = grid.preparedGrid[parseInt(row)]
     for (var column = 0; column < rowArray.length; column++){
       var cell = grid.preparedGrid[parseInt(row)][parseInt(column)];
-      preload(grid, cell);
+      var floor = new createjs.Bitmap(FLOOR);
+      floor.x = cell.x
+      floor.y = cell.y
+      grid.addChildAt(floor, 0);
+      if (!cell.north || cell.linklist.indexOf(cell.north) === -1){
+        var northwall = new createjs.Bitmap(NORTHWALL);
+        northwall.x = cell.x
+        northwall.y = cell.y
+        northwall.width = 80;
+        northwall.height = 80;
+        grid.addChildAt(northwall, 1);
+        walls.push(northwall);
+      }
+      if (!cell.south || cell.linklist.indexOf(cell.south) === -1){
+        var southwall = new createjs.Bitmap(SOUTHWALL);
+        southwall.x = cell.x
+        southwall.y = cell.y
+        southwall.width = 80;
+        southwall.height = 80;
+        grid.addChildAt(southwall, 2);
+        walls.push(southwall);
+      }
+      if (!cell.east || cell.linklist.indexOf(cell.east) === -1){
+        var eastwall = new createjs.Bitmap(EASTWALL);
+        eastwall.x = cell.x
+        eastwall.y = cell.y
+        eastwall.width = 80;
+        eastwall.height = 80;
+        grid.addChildAt(eastwall, 3);
+        walls.push(eastwall);
+      }
+      if (!cell.west || cell.linklist.indexOf(cell.west) === -1){ 
+        var westwall = new createjs.Bitmap(WESTWALL);
+        westwall.x = cell.x
+        westwall.y = cell.y
+        westwall.width = 80;
+        westwall.height = 80;
+        grid.addChildAt(westwall, 4);
+        walls.push(westwall);
+      }
     };
   }; 
 };

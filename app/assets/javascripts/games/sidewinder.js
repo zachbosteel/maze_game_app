@@ -2,15 +2,12 @@
 
 function sidewinder(grid){
   var grid = grid
-  for (var row = 0; row < grid.preparedGrid.length - 1; row++){
+  for (var row = 0; row < grid.preparedGrid.length; row++){
     var rowArray = grid.preparedGrid[parseInt(row)];
     var run = []
-    for (var column = 0; column < rowArray.length - 1; column++){
+    for (var column = 0; column < rowArray.length; column++){
       var cell = grid.preparedGrid[parseInt(row)][parseInt(column)];
       run.push(cell);
-
-      var atEasternBoundary = (!cell.east);
-      var atNorthernBoundary = (!cell.north);
 
       var shouldCloseOut = (Math.floor(Math.random() * 2));
 
