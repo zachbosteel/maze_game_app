@@ -5,12 +5,12 @@ var Container = createjs.Container
 var walls = [];
 
 var Grid = createSubclass(Container, 'Grid', {
-  initialize: Grid$initialize,
-  randomCell: Grid$randomCell,
-  drawCells: Grid$drawCells
+  initialize: Grid_initialize,
+  randomCell: Grid_randomCell,
+  drawCells: Grid_drawCells
 });
 
-function Grid$initialize(rows, columns){
+function Grid_initialize(rows, columns){
     Container.prototype.initialize.apply(this, arguments);
     this.gridRows = rows;
     this.columns = columns;
@@ -55,13 +55,13 @@ function configureCells(){
   };
 };
 
-function Grid$randomCell(){
+function Grid_randomCell(){
   var randomRow = Math.floor((Math.random() * this.gridRows) + 1);
   var randomColumn = Math.floor((Math.random() * this.columns) + 1);
   return this.preparedGrid[randomRow][randomColumn];
 };
 
-function Grid$drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
+function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
   for (var row = 0; row < grid.preparedGrid.length; row++){
     var rowArray = grid.preparedGrid[parseInt(row)]
     for (var column = 0; column < rowArray.length; column++){

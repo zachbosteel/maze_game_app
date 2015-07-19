@@ -20,6 +20,9 @@
         world.addChildAt(grid, 0)
 
         sidewinder(grid);
+        var startCell = grid.preparedGrid[0][0];
+
+        startCell.cellDistances();
 
         var FLOOR,
             NORTHWALL,

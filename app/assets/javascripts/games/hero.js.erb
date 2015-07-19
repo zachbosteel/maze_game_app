@@ -5,11 +5,11 @@ var EventDispatcher = createjs.EventDispatcher
 var EaselEvent = createjs.Event
 
 var Hero = createSubclass(Container, 'Hero', {
-  initialize: Hero$initialize
+  initialize: Hero_initialize
 });
 
 
-function Hero$initialize(name, x, y, wWidth, wHeight) {
+function Hero_initialize(name, x, y, wWidth, wHeight) {
   Container.prototype.initialize.apply(this, arguments);
   this.name = name;
   this.x = x;
@@ -57,14 +57,14 @@ function onTick(event){
         this.x -= 9; 
         delete actions.moveright
       }
-      if (actions.moveleft && currentWall.x < this.x){ 
+      if (actions.moveleft && currentWall.x < this.x + this.radius){ 
         console.log("collision to the left!")
-        this.x +=9;
+        this.x +=12;
         delete actions.moveleft
       };
-      if (actions.moveup && currentWall.y < this.y) {
+      if (actions.moveup && currentWall.y < this.y + this.radius) {
         console.log("collision above!")
-        this.y +=9;
+        this.y +=12;
         delete actions.moveup
       }
       if (actions.movedown && currentWall.y + 80 > this.y) {

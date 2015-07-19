@@ -11,14 +11,18 @@
 // about supported directives.
 //
 //= require jquery
+//= require bootstrap-sprockets
 //= require jquery_ujs
-//= require turbolinks
+//= require angular
+//= require app
+//= require game_form_ctrl
 //= require easeljs-0.8.1.min
 //= require preloadjs-0.6.1.min
 //= require ndgmr.Collision.js
 //= require ./games/create_subclass.js
 //= require ./games/hero.js
 //= require ./games/actions.js
+//= require ./games/distances.js
 //= require ./games/cell.js
 //= require ./games/grid.js
 //= require ./games/sidewinder.js
