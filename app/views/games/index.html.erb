@@ -1,11 +1,17 @@
 <div class="container" ng-app="app">
-  <div class="row">
-    <div class="col-md-5 col-md-offset-2" ng-controller="game_form_ctrl" id="game_form">
+  <div>
+    <div class="col-md-6 col-md-offset-1" ng-controller="game_form_ctrl" id="game_form">
     <h1>Players</h1>
     <ul>
       <li ng-repeat="player in players">{{player}}</li>
     </ul>
     <button>Create Game</button>
+    </div>
+    <div class="col-md-1 pull-right">
+    </div>
+    <div class="col-md-4 pull-right" id="users_online">
+    </div>
+    <div class="col-md-6 col-md-offset-1" id="chat_window">
     </div>
   </div>
 </div>
