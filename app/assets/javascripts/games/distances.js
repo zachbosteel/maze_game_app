@@ -11,26 +11,32 @@ function distances_intialize(root){
   this.includedCells[this.root] = 0;
 };
 
-function distances_addDoors(NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR){
+var endDoor = [];
+
+function distances_addDoors(NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR, grid){
   //randomizing start door position
-  possibleDoors = [];
+  var possibleDoors = [];
   if (!this.root.north){
-    possibleDoors.push(NORTHDOOR);
+    var northdoor = new createjs.Bitmap(NORTHDOOR)
+    possibleDoors.push(northdoor);
   };
   if (!this.root.south){
-    possibleDoors.push(SOUTHDOOR);
+    var southdoor = new createjs.Bitmap(SOUTHDOOR)
+    possibleDoors.push(southdoor);
   };
   if (!this.root.east){
-    possibleDoors.push(EASTDOOR);
+    var eastdoor = new createjs.Bitmap(EASTDOOR)
+    possibleDoors.push(eastdoor);
   };
   if (!this.root.west){
-    possibleDoors.push(WESTDOOR);
+    var westdoor = new createjs.Bitmap(WESTDOOR)
+    possibleDoors.push(westdoor);
   };
-  randomPosition = Math.floor((Math.random() * possibleDoors.length));
-  randomDoor = possibleDoors[randomPosition];
+  var randomPosition = Math.floor((Math.random() * possibleDoors.length));
+  var randomDoor = possibleDoors[randomPosition];
   randomDoor.x = this.root.x;
   randomDoor.y = this.root.y;
-  grid.addChildAt(randomDoor, 5);
+  grid.addChild(randomDoor);
 
   //randomizing finish line
 
@@ -41,9 +47,27 @@ function distances_addDoors(NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR){
       furthestCell = distances.includedCells[i];
     }; 
   };
-  // Math.max.apply(null,
-  //                 Object.keys(this.includedCells).map(function(e) {
-  //                               return this.includedCells[e];
-  //                       }));
-
+  var possibleEndDoors = [];
+  if (!furthestCell.north){
+    var northdoor = new createjs.Bitmap(NORTHDOOR)
+    possibleEndDoors.push(northdoor);
+  };
+  if (!furthestCell.south){
+    var southdoor = new createjs.Bitmap(SOUTHDOOR)
+    possibleEndDoors.push(southdoor);
+  };
+  if (!furthestCell.east){
+    var eastdoor = new createjs.Bitmap(EASTDOOR)
+    possibleEndDoors.push(eastdoor);
+  };
+  if (!furthestCell.west){
+    var westdoor = new createjs.Bitmap(WESTDOOR)
+    possibleEndDoors.push(WESTDOOR);
+  };
+  var randomEndPosition = Math.floor((Math.random() * possibleEndDoors.length));
+  var randomEndDoor = possibleEndDoors[randomEndPosition];
+  randomEndDoor.x = furthestCell.x;
+  randomEndDoor.y = furthestCell.y;
+  endDoor.push(randomEndDoor)
+  grid.addChild(randomEndDoor);
 };

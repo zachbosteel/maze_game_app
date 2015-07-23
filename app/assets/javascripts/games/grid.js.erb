@@ -61,7 +61,7 @@ function Grid_randomCell(){
   return this.preparedGrid[randomRow][randomColumn];
 };
 
-function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
+function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL, NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR){
   for (var row = 0; row < grid.preparedGrid.length; row++){
     var rowArray = grid.preparedGrid[parseInt(row)]
     for (var column = 0; column < rowArray.length; column++){
@@ -74,8 +74,8 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
         var northwall = new createjs.Bitmap(NORTHWALL);
         northwall.x = cell.x
         northwall.y = cell.y
-        northwall.width = 80;
-        northwall.height = 80;
+        northwall.width = 100;
+        northwall.height = 100;
         grid.addChildAt(northwall, 1);
         walls.push(northwall);
       }
@@ -83,8 +83,8 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
         var southwall = new createjs.Bitmap(SOUTHWALL);
         southwall.x = cell.x
         southwall.y = cell.y
-        southwall.width = 80;
-        southwall.height = 80;
+        southwall.width = 100;
+        southwall.height = 100;
         grid.addChildAt(southwall, 2);
         walls.push(southwall);
       }
@@ -92,8 +92,8 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
         var eastwall = new createjs.Bitmap(EASTWALL);
         eastwall.x = cell.x
         eastwall.y = cell.y
-        eastwall.width = 80;
-        eastwall.height = 80;
+        eastwall.width = 100;
+        eastwall.height = 100;
         grid.addChildAt(eastwall, 3);
         walls.push(eastwall);
       }
@@ -101,11 +101,12 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL){
         var westwall = new createjs.Bitmap(WESTWALL);
         westwall.x = cell.x
         westwall.y = cell.y
-        westwall.width = 80;
-        westwall.height = 80;
+        westwall.width = 100;
+        westwall.height = 100;
         grid.addChildAt(westwall, 4);
         walls.push(westwall);
       }
     };
-  }; 
+  };
+  distances.addDoors(NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR, grid); 
 };

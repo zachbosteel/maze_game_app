@@ -75,6 +75,14 @@ function onTick(event){
     } 
   }
 
+  for (var door = 0; door < endDoor.length; door++){
+    var currentDoor = endDoor[door];
+    var win = ndgmr.checkPixelCollision(currentDoor, this.body);
+    if (win){
+      triggerWin(this);
+    };
+  };
+
   if (this.x === this.wWidth - this.width) {
     this.x -= 7;
     actions.moveright = false;
@@ -100,4 +108,25 @@ function onTick(event){
   }
 
 }
+
+function triggerWin(winningHero){
+          // if (winningHero.player === "player1"){
+          //   triggerLoss(player2)
+          // } else {
+          //   triggerLoss(player1)
+          // };
+
+  var stage = winningHero.parent.parent
+  stage.removeAllChildren();
+  var scope = angular.element(document.getElementById("gamectrl")).scope()
+  
+  scope.$apply( function () {
+    scope.toggleGamePlayed();  
+  });
+
+  
+  
+
+  stage.update();
+};
 

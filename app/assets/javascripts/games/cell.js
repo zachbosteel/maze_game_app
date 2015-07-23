@@ -16,10 +16,10 @@ function Cell_initialize(row, column, name, grid) {
   Container.prototype.initialize.apply(this, arguments);
   this.row = row;
   this.column = column;
-  this.width = 80;
-  this.height = 80;
-  this.x = column * 80; 
-  this.y = row * 80;
+  this.width = 100;
+  this.height = 100;
+  this.x = column * 100; 
+  this.y = row * 100;
   this.name = name;
   this.visited = false;
   this.linklist = [];
@@ -87,7 +87,6 @@ function Cell_cellDistances(){
   this.distance = 0
   var frontier = [this];
   while (frontier){
-    console.log("On the frontier.")
     var newFrontier = [];
     
     for (var i = 0; i < frontier.length; i++){
@@ -101,8 +100,7 @@ function Cell_cellDistances(){
           linked.distance = cell.distance + 1;
           newFrontier.push(linked);
           
-        };
-        console.log(newFrontier)  
+        }; 
       };
     };
     if (newFrontier.length === 0){

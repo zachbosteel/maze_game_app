@@ -1,10 +1,21 @@
 <% content_for :onload do %>
   onload="init();"
 <% end %>
-<div class="container">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <canvas id="main" width="500" height="500"></canvas>
+<div ng-app="app">
+  <div ng-controller="game-ctrl" id="gamectrl">
+    <div class="container">
+      <div class="row" ng-if="!gamePlayed">
+        <div class="col-md-6 col-md-offset-3">
+          <canvas id="main" width="500" height="500"></canvas>
+        </div>
+      </div>
+      <div class="row" ng-if="gamePlayed">
+        <div class="col-md-6 col-md-offset-3">
+          <div id="win_form">
+            <h1>You win!</h1>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

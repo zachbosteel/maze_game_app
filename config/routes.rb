@@ -9,4 +9,12 @@ Rails.application.routes.draw do
 
   get "/profiles/:id" => 'profiles#show'
 
+  namespace :api do
+    namespace :v1 do
+      get "/games" => 'games#index'
+      post "/games" => 'games#create'
+      get "games/:id" => 'games#show'
+    end
+  end
+
 end

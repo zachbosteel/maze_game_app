@@ -15,8 +15,8 @@
         var grid = new Grid(20, 20);
         grid.x = 0
         grid.y = 0
-        grid.width = (grid.gridRows)*80;
-        grid.height = (grid.columns)*80;
+        grid.width = (grid.gridRows)*100;
+        grid.height = (grid.columns)*100;
         world.addChildAt(grid, 0)
 
         sidewinder(grid);
@@ -24,29 +24,42 @@
 
         startCell.cellDistances();
 
-        var FLOOR,
-            NORTHWALL,
-            SOUTHWALL,
-            EASTWALL,
-            WESTWALL;
+        var FLOOR
+          , NORTHWALL
+          , SOUTHWALL
+          , EASTWALL
+          , WESTWALL
+          , NORTHDOOR
+          , SOUTHDOOR
+          , EASTDOOR
+          , WESTDOOR;
 
+          var queue = new createjs.LoadQueue(true);
           function preload(){
-          var preload = new createjs.LoadQueue(true);
-          preload.addEventListener("complete", handleComplete);
-          preload.loadManifest([
-            {id:"floor", src:"<%= image_path('wood-floor-tile-1.png')%>"},
+          queue.addEventListener("complete", handleComplete);
+          queue.loadManifest([
+            {id:"floor", src:"<%= image_path('metal-floor-tile-1.png')%>"},
             {id:"eastwall", src:"<%= image_path('eastwall.png')%>"},
             {id:"westwall", src:"<%= image_path('westwall.png')%>"},
             {id:"northwall", src:"<%= image_path('northwall.png')%>"},
-            {id:"southwall", src:"<%= image_path('southwall.png')%>"}
+            {id:"southwall", src:"<%= image_path('southwall.png')%>"},
+            {id:"eastdoor", src:"<%= image_path('eastdoor.png')%>"},
+            {id:"westdoor", src:"<%= image_path('westdoor.png')%>"},
+            {id:"northdoor", src:"<%= image_path('northdoor.png')%>"},
+            {id:"southdoor", src:"<%= image_path('southdoor.png')%>"},
           ]);
             function handleComplete() {
-              FLOOR = preload.getResult("floor");
-              EASTWALL = preload.getResult("eastwall");
-              WESTWALL = preload.getResult("westwall");
-              NORTHWALL = preload.getResult("northwall");
-              SOUTHWALL = preload.getResult("southwall");
-              grid.drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL);
+              FLOOR = queue.getResult("floor");
+              EASTWALL = queue.getResult("eastwall");
+              WESTWALL = queue.getResult("westwall");
+              NORTHWALL = queue.getResult("northwall");
+              SOUTHWALL = queue.getResult("southwall");
+              EASTDOOR = queue.getResult("eastdoor");
+              WESTDOOR = queue.getResult("westdoor");
+              NORTHDOOR = queue.getResult("northdoor");
+              SOUTHDOOR = queue.getResult("southdoor");
+
+              grid.drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL, NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR);
             };
           };
 
@@ -56,8 +69,8 @@
           , _H = 500
           , xCentre = _W/2
           , yCentre = _H/2
-          , wWidth = (grid.gridRows+1)*80
-          , wHeight = (grid.columns+1)*80;
+          , wWidth = (grid.gridRows+1)*100
+          , wHeight = (grid.columns+1)*100;
 
         var hero = new Hero('Hero 1', 20, 20, wWidth, wHeight, walls);
         world.addChild(hero);
@@ -97,4 +110,6 @@
           canvas.style.backgroundPositionX = x + 'px';
           canvas.style.backgroundPositionY = y + 'px';
         };
+
+        
       };

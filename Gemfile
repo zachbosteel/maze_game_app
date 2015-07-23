@@ -45,6 +45,10 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.3.0'
 end
 
+#my added gems
+
 gem 'bootstrap-sass', '~> 3.3.3'
 
 gem 'devise', '~> 3.4.1'
+
+gem 'pusher', '~> 0.14.5'
