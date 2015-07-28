@@ -62,7 +62,7 @@ function distances_addDoors(NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR, grid){
   };
   if (!furthestCell.west){
     var westdoor = new createjs.Bitmap(WESTDOOR)
-    possibleEndDoors.push(WESTDOOR);
+    possibleEndDoors.push(westdoor);
   };
   var randomEndPosition = Math.floor((Math.random() * possibleEndDoors.length));
   var randomEndDoor = possibleEndDoors[randomEndPosition];

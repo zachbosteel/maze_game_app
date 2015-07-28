@@ -1,7 +1,9 @@
 class GamesController < ApplicationController
 
   def home
-    
+    Pusher['test_channel'].trigger('greet', {
+      :greeting => "Hello there!"
+      })
   end
   
   def index
@@ -13,7 +15,7 @@ class GamesController < ApplicationController
   end
 
   def show
-
+    @id = params[:id]
   end
 
   def edit 

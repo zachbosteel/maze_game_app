@@ -14,6 +14,9 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require angular
+//= require pusher.min
+//= require pusher-angular.min
+//= require PusherChatWidget
 //= require app
 //= require game_form_ctrl
 //= require game_ctrl

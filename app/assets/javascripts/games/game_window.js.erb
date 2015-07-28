@@ -2,6 +2,12 @@
 
       function init() {
 
+        var pusher = new Pusher("<%= ENV['PUSHER_KEY'] %>", {authEndpoint: '/pushers/auth'});
+        var gameChannel = pusher.subscribe('presence-game-channel')
+        gameChannel.bind('pusher:subscription_succeeded', function(members) {
+          console.log(members)
+        })
+
         actionService.init(window);
         var stage = new createjs.Stage("main");
 
@@ -72,8 +78,20 @@
           , wWidth = (grid.gridRows+1)*100
           , wHeight = (grid.columns+1)*100;
 
-        var hero = new Hero('Hero 1', 20, 20, wWidth, wHeight, walls);
-        world.addChild(hero);
+
+        var hero1;
+        var hero2;
+
+        gameChannel.bind('pusher:member_added', function(member){
+          if (parseInt(member.id)===//usedgame player 1) {
+            hero1 = new Hero('Hero 1', 20, 20, wWidth, wHeight, walls);
+            world.addChild(hero1);
+          } else if (parseInt(member.id)===//usedgame player 2) {
+            hero2 = new Hero('Hero 1', 20, 20, wWidth, wHeight, walls);
+            world.addChild(hero1);
+          }
+        })
+         
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.setFPS(60);

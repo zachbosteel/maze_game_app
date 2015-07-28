@@ -1,0 +1,153 @@
+(function(){
+
+  angular.module("app").controller("game_form_ctrl", function($scope, $http, $pusher){
+
+    
+
+    var client = new Pusher("<%= ENV['PUSHER_KEY'] %>", {authEndpoint: '/pushers/auth'});
+    var pusher = $pusher(client);
+    var presenceChannel = pusher.subscribe('presence-lobby-channel');
+   
+
+    $scope.players = [];
+    $scope.chats = [];
+    $scope.playersOnline = presenceChannel.members.count
+    $scope.joinableGames = [];
+    $scope.creatingGame = false;
+    $scope.games = {};
+    $scope.currentGame;
+
+
+    //for creating and updating user list and chats
+
+    presenceChannel.bind('pusher:subscription_succeeded', function(members) {
+        // for example
+        $scope.update_member_count(members.count);
+        $scope.playersOnline = presenceChannel.members.count;
+
+        members.each(function(member) {
+          // for example:
+          $scope.add_member(member);
+        });
+    })
+
+    presenceChannel.bind('pusher:member_added', function(member){
+      $scope.players.push(member);
+      $scope.playersOnline = presenceChannel.members.count
+    })
+
+    presenceChannel.bind('pusher:member_removed', function(member){
+      var index = $scope.players.indexOf(member);
+      $scope.players.splice(index, 1);
+      $scope.playersOnline = presenceChannel.members.count;
+    })
+
+    $scope.update_member_count = function(count){
+      $scope.usersOnline = count;
+    };
+
+    $scope.add_member = function(member){
+      $scope.players.push(member);
+    };
+
+    $scope.submitChat = function(chat){
+      $http.post('/api/v1/submit_chat', {name: presenceChannel.members.me.info.name, chat: chat})
+      $scope.newChat = null;
+    }
+
+    presenceChannel.bind('chat_sent', function(data){
+      $scope.chats.push(data)  
+      $scope.$apply();
+    })
+
+    //end
+  
+    //for creating games and matches
+    
+    $scope.createGame = function(){
+      $scope.creatingGame = !$scope.creatingGame;
+      var game = {
+        playerOne: presenceChannel.members.me,
+        playerTwo: null,
+      }
+      $scope.currentGame = game;
+      $scope.games[presenceChannel.members.me] = game;
+      $http.post('/api/v1/create_game_form', {game: game});
+    };
+
+    presenceChannel.bind('game_created', function(data){
+      $scope.joinableGames.push(data.game);
+      $scope.$apply();
+    })
+
+    $scope.cancelGame = function(){
+      $scope.creatingGame = !$scope.creatingGame;
+      $http.post('/api/v1/delete_game_form', {game: $scope.games[presenceChannel.members.me]})
+      $scope.currentGame = null;
+    }
+
+    presenceChannel.bind('game_deleted', function(data){
+      if (data.game.playerTwo){
+        var id = data.game.playerTwo.id
+        presenceChannel.members.each(function(member){
+          if (parseInt(member.id) === id){
+            $scope.creatingGame = !$scope.creatingGame;
+            $scope.currentGame = null;
+          }   
+        })
+      }
+      var index = $scope.joinableGames.indexOf(data.game);
+      $scope.joinableGames.splice(index, 1);
+    })
+
+
+    $scope.joinGame = function(game, id){
+      $scope.creatingGame = !$scope.creatingGame;
+      $http.post('/api/v1/join_game', {game: game, id: id})
+    }
+
+    presenceChannel.bind('game_joined', function(data){
+      var playerTwo;
+      
+      presenceChannel.members.each(function(member){
+        if (parseInt(member.id) === data.id){
+          playerTwo = member
+        }
+      })
+      console.log(playerTwo)
+      data.game.playerTwo = playerTwo
+      $scope.currentGame = data.game;
+      var index = $scope.joinableGames.indexOf(data.game);
+      $scope.joinableGames.splice(index, 1);
+    })
+
+    $scope.playerCheck = function(){
+      if (presenceChannel.members.me.id === currentGame.playerOne.id){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    $scope.startGame = function(game){
+      $http.post('/api/v1/start_game', {game: game});
+    }
+
+    presenceChannel.bind('game-started', function(data){
+      presenceChannel.members.each(function(member){
+        if (parseInt(member.id) === parseInt(data.game.playerOne.id)){
+          window.location.assign("/games/" + data.game_id)
+          console.log("true")
+        } else if (parseInt(member.id) === parseInt(data.game.playerTwo.id)){
+          window.location.assign("/games/" + data.game_id)
+          console.log("true")
+        };
+      })
+    })
+
+    //end
+    
+
+    window.scope = $scope;
+  });
+}());

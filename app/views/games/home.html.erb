@@ -1,1 +1,10 @@
+<script type="text/javascript">
+  var pusher = new Pusher("<%= ENV['PUSHER_KEY'] %>"); // uses your API KEY
+  var channel = pusher.subscribe('test_channel');
+  channel.bind('greet', function(data) {
+    alert(data.greeting);
+  });
+</script>
+
 <h1>Hello, world!</h1>
+

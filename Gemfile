@@ -52,3 +52,5 @@ gem 'bootstrap-sass', '~> 3.3.3'
 gem 'devise', '~> 3.4.1'
 
 gem 'pusher', '~> 0.14.5'
+
+gem 'dotenv-rails', '~> 2.0.2'
