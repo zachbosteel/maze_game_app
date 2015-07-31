@@ -12,7 +12,7 @@ var Cell = createSubclass(Container, 'Cell', {
   cellDistances: Cell_cellDistances
 });
 
-function Cell_initialize(row, column, name, grid) {
+function Cell_initialize(row, column, name, grid, count) {
   Container.prototype.initialize.apply(this, arguments);
   this.row = row;
   this.column = column;
@@ -24,6 +24,7 @@ function Cell_initialize(row, column, name, grid) {
   this.visited = false;
   this.linklist = [];
   this.distance;
+  this.count = count;
   var parentGrid = grid;
 
   parentGrid.addChild(this);

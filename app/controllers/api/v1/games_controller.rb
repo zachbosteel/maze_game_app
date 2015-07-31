@@ -40,4 +40,9 @@ class Api::V1::GamesController < ApplicationController
     render :json => response
   end
 
+  def trigger_maze
+    response = Pusher['presence-game-channel'].trigger("maze_generated", {closeOutSeed: params[:closeOutSeed], indexSeed: params[:indexSeed]})
+    render :json => response
+  end
+
 end

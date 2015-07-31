@@ -23,11 +23,13 @@ function Grid_initialize(rows, columns){
 
 function prepareGrid(){
   var arrayRows = new Array(parseInt(this.gridRows-1));
+  var count = 0
   for (var row = 0; row <= parseInt(this.gridRows); row++){
     var arrayColumns = new Array(parseInt(this.columns-1))
     for (var column = 0; column <= parseInt(this.columns); column++){
-      var cell = new Cell(row, column, 'cell', this);
+      var cell = new Cell(row, column, 'cell', this, count);
       arrayColumns[column] = cell;
+      count++
     };
     arrayRows[row] = arrayColumns;
   };

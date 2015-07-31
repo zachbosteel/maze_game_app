@@ -5,12 +5,14 @@
     
 
     $scope.toggleGamePlayed = function(){
-      console.log("I just ran!")
       $scope.gamePlayed = !$scope.gamePlayed;
-      console.log($scope.gamePlayed);
     };
 
-    $http.get('api/v1/games/' + gameId)
+    $scope.triggerMaze = function(closeOutSeed, indexSeed){
+      console.log(closeOutSeed)
+      console.log(indexSeed)
+      $http.post("/api/v1/trigger_maze", {closeOutSeed: closeOutSeed, indexSeed: indexSeed})
+    };
 
     window.scope = $scope;
   });

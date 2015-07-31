@@ -3,32 +3,73 @@
       function init() {
 
         var pusher = new Pusher("<%= ENV['PUSHER_KEY'] %>", {authEndpoint: '/pushers/auth'});
-        var gameChannel = pusher.subscribe('presence-game-channel')
-        gameChannel.bind('pusher:subscription_succeeded', function(members) {
-          console.log(members)
-        })
+        gameChannel = pusher.subscribe('presence-game-channel')
+        
+        var rows = 20
+        var columns = 20
+
+        var scope = angular.element(document.getElementById("gamectrl")).scope()
+
 
         actionService.init(window);
         var stage = new createjs.Stage("main");
 
         var canvas = stage.canvas
 
+
+
         var world = new createjs.Container();
         world.x = 0
         world.y = 0
         stage.addChild(world)
 
-        var grid = new Grid(20, 20);
+
+        
+        var grid; 
+                
+        grid = new Grid(rows, columns);
         grid.x = 0
         grid.y = 0
         grid.width = (grid.gridRows)*100;
         grid.height = (grid.columns)*100;
         world.addChildAt(grid, 0)
 
-        sidewinder(grid);
-        var startCell = grid.preparedGrid[0][0];
+        var playerOne;
+        var playerTwo;
+        gameChannel.bind('pusher:subscription_succeeded', function(members){
+          if (members.count === 1){ 
+            members.each(function(member){
+              playerOne = member;
+            })
+          }
+        })
+          
+        
+        gameChannel.bind('pusher:member_added', function(members){
+          console.log("player 2 got here.")
+          gameChannel.members.each(function(member){
+            if (member.id === playerOne.id){
+              console.log("in here")
+              sidewinder(grid, false, false);
+              scope.$apply(function(){
+                scope.triggerMaze(closeOutSeedPrep, indexSeedPrep)
+              })
+            } else {
+              playerTwo = member;
+            }
+          })
+        })
+        
 
-        startCell.cellDistances();
+        gameChannel.bind('maze_generated', function(data){
+
+
+          console.log("sidewinding")
+          sidewinder(grid, data.closeOutSeed, data.indexSeed)  
+
+          var startCell = grid.preparedGrid[0][0];
+          startCell.cellDistances();          
+          
 
         var FLOOR
           , NORTHWALL
@@ -70,31 +111,72 @@
           };
 
           preload();
-
+        
+        
+          })
         var _W = 500
           , _H = 500
           , xCentre = _W/2
           , yCentre = _H/2
-          , wWidth = (grid.gridRows+1)*100
-          , wHeight = (grid.columns+1)*100;
+          , wWidth = (rows+1)*100
+          , wHeight = (columns+1)*100;
 
 
-        var hero1;
-        var hero2;
+        var heroes = {};
+        console.log("setting us up the heroes")
+        gameChannel.bind('pusher:subscription_succeeded', function(members) {
+            members.each(function(member){
+              if (member.id != gameChannel.members.me.id){
+                var aHero = new Hero('Hero', 20, 20, wWidth, wHeight, gameChannel, member.id);
+                heroes[member.id] = aHero;
+                console.log("Second hero added with member id " + member.id)
+                world.addChild(heroes[member.id])
+              } else {
+                var newHero = new Hero('Hero 1', 20, 20, wWidth, wHeight, gameChannel, gameChannel.members.me.id);
+                world.addChild(newHero);
+                console.log("Added me with member id " + gameChannel.members.me.id)
+                heroes[gameChannel.members.me.id] = newHero;
+              };
+            })           
+        })
 
         gameChannel.bind('pusher:member_added', function(member){
-          if (parseInt(member.id)===//usedgame player 1) {
-            hero1 = new Hero('Hero 1', 20, 20, wWidth, wHeight, walls);
-            world.addChild(hero1);
-          } else if (parseInt(member.id)===//usedgame player 2) {
-            hero2 = new Hero('Hero 1', 20, 20, wWidth, wHeight, walls);
-            world.addChild(hero1);
-          }
+          gameChannel.members.each(function(member){
+              if (member.id != gameChannel.members.me.id){
+                var aHero = new Hero('Hero', 20, 20, wWidth, wHeight, gameChannel, member.id);
+                heroes[member.id] = aHero;
+                world.addChild(heroes[member.id]);
+                console.log("Second hero added.");
+              };
+            })
         })
          
+        gameChannel.bind('client-hero_moved', function(data){
+          console.log(heroes[data.id].x)
+          console.log(data.destinationX)
+          console.log(data.destinationY)
+          if (heroes[data.id].x < data.destinationX){
+            while(heroes[data.id].x < data.destinationX){
+              heroes[data.id].x++;
+            };         
+          } else if (heroes[data.id].x > data.destinationX){
+            while(heroes[data.id].x > data.destinationX){
+              heroes[data.id].x--;
+            }
+          } 
+          if (heroes[data.id].y < data.destinationY){
+            while(heroes[data.id].y < data.destinationY){
+              heroes[data.id].y++;
+            };         
+          } else if (heroes[data.id].y > data.destinationY){
+            while(heroes[data.id].y > data.destinationY){
+              heroes[data.id].y--;
+            }
+          }
+        })
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
-        createjs.Ticker.setFPS(60);
+        createjs.Ticker.setFPS(40);
         createjs.Ticker.addEventListener("tick", function (event) { 
           stage.update();
           updateBackground();
@@ -103,18 +185,18 @@
 
         function cameraMove(){
           if (wWidth > _W) {
-            if (hero.x < wWidth - xCentre && hero.x > xCentre)
-              world.x = -hero.x + xCentre;
-            else if (hero.x >= wWidth - xCentre)
+            if (heroes[gameChannel.members.me.id].x < wWidth - xCentre && heroes[gameChannel.members.me.id].x > xCentre)
+              world.x = -heroes[gameChannel.members.me.id].x + xCentre;
+            else if (heroes[gameChannel.members.me.id].x >= wWidth - xCentre)
               world.x = -(wWidth - _W);
             else
               world.x = 0;
           }
 
           if (wHeight > _H) {
-            if (hero.y < wHeight - yCentre && hero.y > yCentre)
-              world.y = -hero.y + yCentre;
-            else if (hero.y >= wHeight - yCentre)
+            if (heroes[gameChannel.members.me.id].y < wHeight - yCentre && heroes[gameChannel.members.me.id].y > yCentre)
+              world.y = -heroes[gameChannel.members.me.id].y + yCentre;
+            else if (heroes[gameChannel.members.me.id].y >= wHeight - yCentre)
               world.y = -(wHeight - _H);
             else
               world.y = 0;

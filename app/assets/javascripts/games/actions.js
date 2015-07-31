@@ -11,6 +11,7 @@ var controls = {
 };
 
 var currentActions = {};
+var gameChannel;
 
 var actionService = {
   init: actions_init,
@@ -18,7 +19,7 @@ var actionService = {
 };
 
 function actions_init(win){
-  win = win || window
+  win = win || window;
   EventDispatcher.initialize(actionService);
 
   win.addEventListener('keydown', onKeyDown);
@@ -65,7 +66,8 @@ function prepareEvent(event, phase, type){
     metaKey: event.metaKey,
     altKey: event.altKey,
     ctrlKey: event.ctrlKey,
-    phase: phase
+    phase: phase, 
+    player: gameChannel.members.me.id
   };
 
   var keyEvent = new EaselEvent(type);

@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       post "delete_game_form" => 'games#delete_game_form'
       post "join_game" => 'games#join_game'
       post "start_game" => 'games#create'
+      post "trigger_maze" => 'games#trigger_maze'
     end
   end
 
