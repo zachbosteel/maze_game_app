@@ -45,4 +45,9 @@ class Api::V1::GamesController < ApplicationController
     render :json => response
   end
 
+  def trigger_end
+    response = Pusher['presence-game-channel'].trigger("maze_won", {winnerId: params[:id]})
+    render :json => response
+  end
+
 end

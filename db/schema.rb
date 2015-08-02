@@ -11,17 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150628194557) do
+ActiveRecord::Schema.define(version: 20150802144440) do
 
   create_table "games", force: :cascade do |t|
-    t.string   "maze_map",   limit: 255
-    t.integer  "winner_id",  limit: 4
-    t.integer  "loser_id",   limit: 4
-    t.string   "trophy1",    limit: 255
-    t.string   "trophy2",    limit: 255
-    t.string   "trophy3",    limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.integer  "winner_id",      limit: 4
+    t.integer  "loser_id",       limit: 4
+    t.string   "trophy1",        limit: 255
+    t.string   "trophy2",        limit: 255
+    t.string   "trophy3",        limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.text     "index_seed",     limit: 65535
+    t.text     "close_out_seed", limit: 65535
   end
 
   create_table "players", force: :cascade do |t|

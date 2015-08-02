@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       post "join_game" => 'games#join_game'
       post "start_game" => 'games#create'
       post "trigger_maze" => 'games#trigger_maze'
+      post "trigger_end" => 'games#trigger_end'
     end
   end
 

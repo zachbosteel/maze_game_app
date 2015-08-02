@@ -12,7 +12,8 @@
       <div class="row" ng-if="gamePlayed">
         <div class="col-md-6 col-md-offset-3">
           <div id="win_form">
-            <h1>You win!</h1>
+            <h1 id="conclusion_message" ng-if="message1">{{message1}}</h1>
+            <h1 id="conclusion_message" ng-if="message2">{{message2}}</h1>
           </div>
         </div>
       </div>

@@ -211,5 +211,40 @@
           canvas.style.backgroundPositionY = y + 'px';
         };
 
+        gameChannel.bind('maze_won', function(data){
+          gameChannel.members.each(function(member){
+            if (data.winnerId === member.id){
+              triggerWin(member);
+            } else {
+              triggerLoss(member);
+            };
+          })  
+        })
+
+
+        function triggerWin(winningPlayer){
+          gameChannel.members.each(function(member){
+            if (member.id === winningPlayer.id){
+              stage.removeAllChildren();
+              scope.$apply( function () {
+                scope.toggleGamePlayedWin(winningPlayer);  
+              });          
+              stage.update();
+            }
+          })
+        };
         
+
+        function triggerLoss(losingPlayer){
+          gameChannel.members.each(function(member){
+            if (member.id === losingPlayer.id){
+              stage.removeAllChildren();
+              scope.$apply( function () {
+                scope.toggleGamePlayedLoss(losingPlayer);  
+              });          
+              stage.update();
+            }
+          })
+        };
+
       };

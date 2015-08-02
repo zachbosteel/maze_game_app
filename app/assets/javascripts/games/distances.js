@@ -66,6 +66,9 @@ function distances_addDoors(NORTHDOOR, SOUTHDOOR, EASTDOOR, WESTDOOR, grid){
   };
   var randomEndPosition = Math.floor((Math.random() * possibleEndDoors.length));
   var randomEndDoor = possibleEndDoors[randomEndPosition];
+  if (!randomEndDoor || randomEndDoor === -1){
+    randomEndDoor = new createjs.Bitmap(SOUTHDOOR)
+  }
   randomEndDoor.x = furthestCell.x;
   randomEndDoor.y = furthestCell.y;
   endDoor.push(randomEndDoor)

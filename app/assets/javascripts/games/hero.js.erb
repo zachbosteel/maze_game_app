@@ -104,8 +104,13 @@ function onTick(event){
   for (var door = 0; door < endDoor.length; door++){
     var currentDoor = endDoor[door];
     var win = ndgmr.checkPixelCollision(currentDoor, this.body);
+    var winnerId = this.id
     if (win){
-      triggerWin(this);
+      var scope = angular.element(document.getElementById("gamectrl")).scope()
+  
+      scope.$apply( function () {
+        scope.triggerEnd(winnerId);  
+      });
     };
   };
 
@@ -150,24 +155,5 @@ setInterval(function() {
       channel.trigger('client-hero_moved', {id: passId, destinationX: destinationX, destinationY: destinationY});
 }}, 100)
 
-function triggerWin(winningHero){
-          // if (winningHero.player === "player1"){
-          //   triggerLoss(player2)
-          // } else {
-          //   triggerLoss(player1)
-          // };
 
-  var stage = winningHero.parent.parent
-  stage.removeAllChildren();
-  var scope = angular.element(document.getElementById("gamectrl")).scope()
-  
-  scope.$apply( function () {
-    scope.toggleGamePlayed();  
-  });
-
-  
-  
-
-  stage.update();
-};
 
