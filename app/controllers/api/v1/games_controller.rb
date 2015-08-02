@@ -17,6 +17,15 @@ class Api::V1::GamesController < ApplicationController
     render :json => response
   end
 
+  def update
+    p params[:id]
+    @game = Game.find_by(id: params[:id]);
+    if !@game.winner_id
+      @game.update(close_out_seed: params[:closeOutSeed], index_seed: params[:indexSeed], winner_id: params[:winningPlayerId], loser_id: params[:losingPlayerId])
+    end
+    redirect_to "/games"
+  end
+
   def submit_chat
     p params[:name]
     p params[:chat]

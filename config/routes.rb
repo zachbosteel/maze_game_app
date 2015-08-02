@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get "/games" => 'games#index'
       post "/games" => 'games#create'
       get "/games/:id" => 'games#show'
+      patch "/games/:id" => 'games#update'
       post "submit_chat" => 'games#submit_chat'
       post "create_game_form" => 'games#create_game_form'
       post "delete_game_form" => 'games#delete_game_form'

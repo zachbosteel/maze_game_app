@@ -2,7 +2,7 @@
   onload="init();"
 <% end %>
 <div ng-app="app">
-  <div ng-controller="game-ctrl" id="gamectrl">
+  <div ng-controller="game-ctrl" id="gamectrl" ng-init="setup(<%= @id %>)">
     <div class="container">
       <div class="row" ng-if="!gamePlayed">
         <div class="col-md-6 col-md-offset-3">
@@ -12,8 +12,9 @@
       <div class="row" ng-if="gamePlayed">
         <div class="col-md-6 col-md-offset-3">
           <div id="win_form">
-            <h1 id="conclusion_message" ng-if="message1">{{message1}}</h1>
-            <h1 id="conclusion_message" ng-if="message2">{{message2}}</h1>
+            <h1 id="conclusion_message">{{message1}}</h1>
+            <h1 id="conclusion_message">{{message2}}</h1>
+            <button ng-click="saveGame()">Return to Lobby</button>
           </div>
         </div>
       </div>

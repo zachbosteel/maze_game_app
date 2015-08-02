@@ -1,10 +1,41 @@
-<script type="text/javascript">
-  var pusher = new Pusher("<%= ENV['PUSHER_KEY'] %>"); // uses your API KEY
-  var channel = pusher.subscribe('test_channel');
-  channel.bind('greet', function(data) {
-    alert(data.greeting);
-  });
-</script>
+<div class="container" id="home_container">
+<div class="row" id="home_top_row">
+<div class="col-md-12" id="home_top">
+<div id="carousel-home-page" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    <!-- <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="2"></li> -->
+  </ol>
 
-<h1>Hello, world!</h1>
-
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img src="<%= image_path('mazerunning.png')%>" alt="Two men enter a dark maze." id="home_page_top">
+      <div class="carousel-caption">
+      </div>
+    </div>
+  </div>
+</div>
+</div> <!-- column div -->
+</div> <!-- row div -->
+  <div class="row">
+    <div class="col-md-6">
+    <h1 class="homepage_section_header">Nothing but a dream...</h1>
+    <p class="homepage_section_graf">You lead a normal life. You go to work or school, meet with family and friends. Lately, though, you haven't been sleeping well. It's not that you don't sleep. Rather, when you close your eyes, it's the same dream over and over again. You're in an endless maze, racing against an opponent to escape. You can tell it's a dream after so many visits. Still, the same gut feeling you had the first time persists. You feel certain, deep down in your bones and heart and even deeper, that if you don't escape this maze first, you might not get out at all. You might not wake up at all. And every morning you awake exhausted, as if you've been running...</p>
+    </div>
+    <div class="col-md-6">
+    <h2>placeholder image div</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    <h2>placeholder image div</h2>
+    </div>
+    <div class="col-md-6">
+    <h1 class="homepage_section_header">A multiplayer challenge</h1>
+    <p class="homepage_section_graf">Challenge other players to a real-time race through a procedurally generated maze. The walls change shape with every iteration; the mission stays the same. Get to the end first.</p>
+    </div>
+  </div>
+</div> <!-- container div -->

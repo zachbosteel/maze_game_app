@@ -1,7 +1,7 @@
 <div class="container" ng-app="app">
   <div ng-controller="game_form_ctrl" ng-init="setup('<%= current_player.screen_name %>')">
-    <div class="row">
-    <div class="col-md-6 col-md-offset-1" id="game_form">
+    <div class="row" id="top_chatroom_row">
+    <div class="col-md-5 col-md-offset-2" id="game_form">
       <div id="current_game_list" ng-if="!creatingGame">
         <ul>
           <li ng-repeat="game in joinableGames track by $index" ng-click="joinGame(game, <%= current_player.id %>)">{{game.playerOne.info.name}}'s Game</li>
@@ -17,9 +17,9 @@
         <button ng-click="cancelGame()">Cancel</button>
       </div>
     </div>
-    <div class="col-md-1 pull-right">
+    <div class="col-md-2 pull-right">
     </div>
-    <div class="col-md-4 pull-right" id="users_online">
+    <div class="col-md-3 pull-right" id="users_online">
       <h2>Players logged in: {{playersOnline}} </h2>
       <ul>
         <li ng-repeat="player in players track by $index">{{player.info.name}}</li>
@@ -27,7 +27,7 @@
     </div>
     
     
-    <div class="col-md-6 col-md-offset-1" id="chat_window" ng-model="chatWidget">
+    <div class="col-md-5 col-md-offset-2" id="chat_window" ng-model="chatWidget">
     <ul>
       <li ng-repeat="chat in chats track by $index">{{chat.name}}: {{chat.chat}}</li>
     </ul>
