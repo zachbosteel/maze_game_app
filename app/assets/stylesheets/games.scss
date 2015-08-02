@@ -26,7 +26,7 @@ body {
 }
 
 #game_form {
-  background-color:black;
+  background-color:darkgrey;
   height:350px;
   border-top:5px solid grey;
   border-left:5px solid grey;
@@ -34,6 +34,31 @@ body {
   ul {
     list-style-type:none;
     color:white;
+  }
+  button#create{
+    color:black;
+    text-align:center;
+    position: absolute;
+    bottom: 10px;
+    margin-left:25px;
+    margin-right:25px;
+    border-color:darkgrey;
+  }
+  button#start{
+    color:black;
+    text-align:center;
+    position: absolute;
+    bottom: 10px;
+    left:25px;
+    border-color:darkgrey;
+  }
+  button#cancel{
+    color:black;
+    text-align:center;
+    position: absolute;
+    bottom: 10px;
+    right:25px;
+    border-color:darkgrey;
   }
 };
 
@@ -47,6 +72,8 @@ body {
   ul {
     list-style-type:none;
     font-size:20px;
+    margin:0px;
+    padding:0px;
     li {
       border-width:2px;
       border-style:solid;
@@ -56,7 +83,7 @@ body {
     }
   }
   h2{
-    font-size:30px;
+    font-size:27px;
     text-align: center;
   }
 }
@@ -71,10 +98,27 @@ body {
     list-style-type:none;
     color:white;
   }
+  input {
+    width:80%;
+    color:black;
+    position: absolute;
+    bottom: 10px;
+    border-style:solid;
+    border-width:3px;
+    border-color:darkgrey;
+  }
+  button{
+    color:black;
+    text-align:center;
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    border-color:darkgrey;
+  }
 }
 
 #main {
-  margin: 0;
+  margin-top: 125px;
   width: 500px;
   height: 500px;
   display: block;
@@ -85,6 +129,9 @@ body {
   text-align:center;
   width:500px;
   height:500px;
+  border-style:solid;
+  border-width:5px;
+  border-color:darkgrey;
 };
 
 #home_page_top {
@@ -114,7 +161,7 @@ body {
 }
 
 .play_now{
-  float:left;
+  float:right;
   height:50px;
   width:100px;
   background-color:#993333;

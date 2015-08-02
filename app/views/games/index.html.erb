@@ -4,17 +4,17 @@
     <div class="col-md-5 col-md-offset-2" id="game_form">
       <div id="current_game_list" ng-if="!creatingGame">
         <ul>
-          <li ng-repeat="game in joinableGames track by $index" ng-click="joinGame(game, <%= current_player.id %>)">{{game.playerOne.info.name}}'s Game</li>
+          <li ng-repeat="game in joinableGames track by $index" ng-click="joinGame(game, <%= current_player.id %>)">Join {{game.playerOne.info.name}}'s Game</li>
         </ul>
-        <button ng-click="createGame()">Create Game</button>
+        <button ng-click="createGame()" id="create">Create Game</button>
       </div>
       <div id="create_game" ng-if="creatingGame">
         <ul>
-          <li>{{currentGame.playerOne.info.name}}</li>
-          <li ng-if="currentGame.playerTwo">{{currentGame.playerTwo.info.name}}</li>
+          <li>Player 1: {{currentGame.playerOne.info.name}}</li>
+          <li ng-if="currentGame.playerTwo">Player 2: {{currentGame.playerTwo.info.name}}</li>
         </ul>
-        <button ng-if="currentGame.playerTwo" ng-click="startGame(currentGame)">Start Game</button>
-        <button ng-click="cancelGame()">Cancel</button>
+        <button ng-if="currentGame.playerTwo" ng-click="startGame(currentGame)" id="start">Start Game</button>
+        <button ng-click="cancelGame()" id="cancel">Cancel</button>
       </div>
     </div>
     <div class="col-md-2 pull-right">
