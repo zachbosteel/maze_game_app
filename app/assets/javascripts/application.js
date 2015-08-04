@@ -26,8 +26,8 @@
 //= require ndgmr.Collision.js
 //= require ./games/win.js
 //= require ./games/create_subclass.js
-//= require ./games/hero.js
 //= require ./games/actions.js
+//= require ./games/hero.js
 //= require ./games/distances.js
 //= require ./games/cell.js
 //= require ./games/grid.js

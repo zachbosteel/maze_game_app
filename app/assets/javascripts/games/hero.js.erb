@@ -22,6 +22,29 @@ function Hero_initialize(name, x, y, wWidth, wHeight, gameChannel, id) {
   this.gameChannel = gameChannel;
   channel = this.gameChannel;
   this.id = id;
+  var tempHero = this
+  var redData ={
+    images: ["<%= image_path('runCycleRightLeft.png') %>", "<%= image_path('runCycleUpDown.png') %>"],
+    frames: {width:50, height:50, count:64},
+    animations: {
+      runLeftRight: [0,31],
+      runUpDown: [32,63],
+      stand: 6 
+    }
+  }
+  var greenData = {
+    images: ["<%= image_path('runCycleRightLeftGreen.png') %>", "<%= image_path('runCycleUpDownGreen.png') %>"],
+    frames: {width:50, height:50, count:64},
+    animations: {
+      runLeftRight: [0,31],
+      runUpDown: [32,63],
+      stand: 6 
+    }
+  }
+  this.redSpriteSheet = new createjs.SpriteSheet(redData)
+  console.log(redData);
+  console.log(this.redSpriteSheet);
+  this.greenSpriteSheet = new createjs.SpriteSheet(greenData)
   passableId = this.id;
 
   _setupDisplay.call(this);
@@ -32,7 +55,14 @@ function Hero_initialize(name, x, y, wWidth, wHeight, gameChannel, id) {
 
 
 function _setupDisplay(){
-  this.body = new createjs.Bitmap("<%= image_path('Carbuncle2.gif')%>")
+  if (this.id === channel.members.me.id){
+    this.body = new createjs.Sprite(this.redSpriteSheet);
+    console.log(this.body)
+  } else {
+    this.body = new createjs.Sprite(this.greenSpriteSheet);
+    console.log(this.body)
+  };
+  // this.body = new createjs.Bitmap("<%= image_path('Carbuncle2.gif')%>")
   this.body.x = this.x - 10;
   this.body.y = this.y - 10;
   this.addChild(this.body);
@@ -43,6 +73,37 @@ function _setupProperties(){
   this.inertia = 0;
 };
 
+var lastAction;
+function animate(myHero){
+  var animationActions = actionService.get();
+  var animation;
+  if (animationActions.moveright && lastAction != "right"){
+    lastAction = "right";
+    myHero.body.gotoAndPlay("runLeftRight");
+      if (myHero.body.scaleX === -1){
+        myHero.body.scaleX = 1;
+      };
+  };
+  if (animationActions.moveleft && lastAction != "left"){
+    lastAction = "left";
+    myHero.body.gotoAndPlay("runLeftRight");
+    myHero.body.scaleX = -1;
+  };
+  if (animationActions.moveup && lastAction != "up"){
+    lastAction = "up";
+    myHero.body.gotoAndPlay("runUpDown");
+    myHero.body.scaleY = -1;
+  };
+  if (animationActions.movedown && lastAction != "down"){
+    lastAction = "down";
+    myHero.body.gotoAndPlay("runUpDown");
+      if (myHero.body.scaleY === -1){
+        myHero.body.scaleY = 1;
+    };
+  };
+  
+}
+
 var destinationX;
 var destinationY;
 
@@ -51,50 +112,58 @@ function onTick(event){
 
   var speed = 5;
   
+  if (!actions.moveright && !actions.moveleft && !actions.moveup && !actions.movedown && this.id === channel.members.me.id){    
+    this.body.gotoAndStop("stand");
+    lastAction = null;
+  }
+
 
   if (actions.moveright && actions.moveright.player === this.id){ 
     this.x += speed;
     destinationX = this.x + speed;
+    animate(this);
   }
   if (actions.moveleft && actions.moveleft.player === this.id){ 
     this.x -= speed;
     destinationX = this.x - speed;
+    animate(this);
   }
   if (actions.moveup && actions.moveup.player === this.id){
     this.y -= speed;
     destinationY = this.y - speed;
+    animate(this);
   }
   if (actions.movedown && actions.movedown.player === this.id){
     this.y += speed;
     destinationY = this.y + speed;
+    animate(this);
   }
 
   for (var wall = 0; wall < walls.length; wall++){
     var currentWall = walls[wall];
     var intersection = ndgmr.checkPixelCollision(currentWall, this.body)
     if (intersection){
-      console.log("collision!");
-      if (actions.moveright && currentWall.x + 80 > this.x){ 
+      if (actions.moveright && currentWall.x + 100 > this.x){ 
         console.log("collision to the right!")
-        this.x -= 9; 
+        this.x -= 10; 
         destinationX = null;
         delete actions.moveright
       }
       if (actions.moveleft && currentWall.x < this.x + this.radius){ 
         console.log("collision to the left!")
-        this.x +=12;
+        this.x +=10;
         destinationX = null;
         delete actions.moveleft
       };
       if (actions.moveup && currentWall.y < this.y + this.radius) {
         console.log("collision above!")
-        this.y +=12;
+        this.y +=10;
         destinationY = null;
         delete actions.moveup
       }
-      if (actions.movedown && currentWall.y + 80 > this.y) {
+      if (actions.movedown && currentWall.y + 100 > this.y) {
         console.log("collision below!")
-        this.y -=9;
+        this.y -=10;
         destinationY = null;
         delete actions.movedown
       };
@@ -115,22 +184,22 @@ function onTick(event){
   };
 
   if (this.x === this.wWidth - this.width) {
-    this.x -= 7;
+    this.x -= 10;
     actions.moveright = false;
     destinationX = null;
   }
   if (this.x === this.width) {
-    this.x +=7;
+    this.x +=10;
     actions.moveleft = false;
     destinationX = null;
   }
   if (this.y === this.height) {
-    this.y +=7;
+    this.y +=10;
     actions.moveup = false;
     destinationY = null;
   }
   if (this.y === this.wHeight - this.height) {
-    this.y -=7;
+    this.y -=10;
     actions.movedown = false;
     destinationY = null;
   }
@@ -144,16 +213,16 @@ function onTick(event){
   
 }
 
+ 
+
 
 
 setInterval(function() {
-  console.log("interval!")
     var actionsChecker = actionService.get();
     if (actionsChecker.moveright || actionsChecker.moveleft || actionsChecker.moveup || actionsChecker.movedown){
       var passId = channel.members.me.id
-      console.log("interval movement for Hero " + passId);
       channel.trigger('client-hero_moved', {id: passId, destinationX: destinationX, destinationY: destinationY});
-}}, 100)
+}}, 250)
 
 
 
