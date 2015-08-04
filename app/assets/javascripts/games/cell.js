@@ -16,10 +16,10 @@ function Cell_initialize(row, column, name, grid, count) {
   Container.prototype.initialize.apply(this, arguments);
   this.row = row;
   this.column = column;
-  this.width = 100;
-  this.height = 100;
-  this.x = column * 100; 
-  this.y = row * 100;
+  this.width = 120;
+  this.height = 120;
+  this.x = column * 120; 
+  this.y = row * 120;
   this.name = name;
   this.visited = false;
   this.linklist = [];

@@ -30,8 +30,8 @@
         grid = new Grid(rows, columns);
         grid.x = 0
         grid.y = 0
-        grid.width = (grid.gridRows)*100;
-        grid.height = (grid.columns)*100;
+        grid.width = (grid.gridRows)*120;
+        grid.height = (grid.columns)*120;
         world.addChildAt(grid, 0)
 
         var playerOne;
@@ -46,10 +46,8 @@
           
         
         gameChannel.bind('pusher:member_added', function(members){
-          console.log("player 2 got here.")
           gameChannel.members.each(function(member){
             if (member.id === playerOne.id){
-              console.log("in here")
               sidewinder(grid, false, false);
               scope.$apply(function(){
                 scope.triggerMaze(closeOutSeedPrep, indexSeedPrep)
@@ -64,7 +62,7 @@
         gameChannel.bind('maze_generated', function(data){
 
 
-          console.log("sidewinding")
+          
           sidewinder(grid, data.closeOutSeed, data.indexSeed)  
 
           var startCell = grid.preparedGrid[0][0];
@@ -118,23 +116,20 @@
           , _H = 500
           , xCentre = _W/2
           , yCentre = _H/2
-          , wWidth = (rows+1)*100
-          , wHeight = (columns+1)*100;
+          , wWidth = (rows+1)*120
+          , wHeight = (columns+1)*120;
 
 
-        var heroes = {};
-        console.log("setting us up the heroes")
+        heroes = {};
         gameChannel.bind('pusher:subscription_succeeded', function(members) {
             members.each(function(member){
               if (member.id != gameChannel.members.me.id){
                 var aHero = new Hero('Hero', 20, 20, wWidth, wHeight, gameChannel, member.id);
                 heroes[member.id] = aHero;
-                console.log("Second hero added with member id " + member.id)
                 world.addChild(heroes[member.id])
               } else {
                 var newHero = new Hero('Hero 1', 20, 20, wWidth, wHeight, gameChannel, gameChannel.members.me.id);
                 world.addChild(newHero);
-                console.log("Added me with member id " + gameChannel.members.me.id)
                 heroes[gameChannel.members.me.id] = newHero;
               };
             })           
@@ -146,47 +141,96 @@
                 var aHero = new Hero('Hero', 20, 20, wWidth, wHeight, gameChannel, member.id);
                 heroes[member.id] = aHero;
                 world.addChild(heroes[member.id]);
-                console.log("Second hero added.");
               };
             })
         })
-         
+        
+        var foreignLastAction; 
+        var foreignHero;
+        var foreignDestinationRight;
+        var foreignDestinationLeft;
+        var foreignDestinationUp;
+        var foreignDestinationDown;
+        var go;
+        var listening = false;
+        var hereTime = 0;
+
         gameChannel.bind('client-hero_moved', function(data){
-          if (heroes[data.id].x < data.destinationX){
-            while(heroes[data.id].x < data.destinationX){
-              console.log("Player 2 moves right")
-              heroes[data.id].x++;
-              heroes[data.id].body.gotoAndPlay("runRightLeft")
-              if (heroes[data.id].body.scaleX === -1){
-                heroes[data.id].body.scaleX = 1;
-              }
-            };         
-          } else if (heroes[data.id].x > data.destinationX){
-            while(heroes[data.id].x > data.destinationX){
-              heroes[data.id].x--;
-              heroes[data.id].body.gotoAndPlay("runRightLeft");
-              heroes[data.id].body.scaleX = -1;
-            }
-          } 
-          if (heroes[data.id].y < data.destinationY){
-            while(heroes[data.id].y < data.destinationY){
-              heroes[data.id].y++;
-              heroes[data.id].body.gotoAndPlay("runUpDown")
-              if (heroes[data.id].body.scaleY === -1){
-                heroes[data.id].body.scaleY = 1;
-              }
-            };         
-          } else if (heroes[data.id].y > data.destinationY){
-            while(heroes[data.id].y > data.destinationY){
-              heroes[data.id].y--;
-              heroes[data.id].body.gotoAndPlay("runUpDown");
-              heroes[data.id].body.scaleY = -1;
-            }
+          foreignHero = heroes[data.id];
+          foreignDestinationRight = data.destinationRight;
+          foreignDestinationLeft = data.destinationLeft;
+          foreignDestinationDown = data.destinationDown;
+          foreignDestinationUp = data.destinationUp;
+          go = true;
+          if (!listening){
+            foreignHero.addEventListener('tick', animateThis)
+            listening = true;
           }
-        if (!data.destinationY && !data.destinationX){
-          heroes[data.id].body.gotoAndStop("stand");
-        }
+          hereTime = timeElapsed
         })
+
+        function animateThis(event){  
+          if (go){
+          console.log("got here.")
+          if (foreignDestinationRight && foreignHero.x < foreignDestinationRight){
+              while (foreignHero.x < foreignDestinationRight){
+                foreignHero.x+= 5;
+                if (foreignHero.x + 5 > foreignDestinationRight){
+                  foreignHero.x = foreignDestinationRight
+                }
+              }
+              if (foreignDestinationRight && foreignLastAction !="right"){
+                foreignHero.body.gotoAndPlay("runLeftRight")
+                if (foreignHero.body.scaleX === -1){
+                  foreignHero.body.scaleX = 1;
+                }
+                foreignLastAction = "right";
+              };
+          } else if (foreignDestinationLeft && foreignHero.x > foreignDestinationLeft){
+              while (foreignHero.x > foreignDestinationLeft){
+                foreignHero.x-= 5;
+                if (foreignHero.x - 5 < foreignDestinationLeft){
+                  foreignHero.x = foreignDestinationLeft
+                }
+              };
+              if (foreignDestinationLeft && foreignLastAction != "left"){
+                foreignHero.body.gotoAndPlay("runLeftRight");
+                foreignHero.body.scaleX = -1;
+                foreignLastAction = "left"
+              };
+          }; 
+          if (foreignDestinationDown && foreignHero.y < foreignDestinationDown){
+              while (foreignHero.y < foreignDestinationDown){
+                foreignHero.y+= 5;
+                if (foreignHero.y + 5 > foreignDestinationDown){
+                  foreignHero.y = foreignDestinationDown
+                }
+              }
+              if (foreignDestinationDown && foreignLastAction != "down"){
+                foreignHero.body.gotoAndPlay("runUpDown")
+                if (foreignHero.body.scaleY === -1){
+                  foreignHero.body.scaleY = 1;
+                }
+                foreignLastAction = "down"
+              };        
+          } else if (foreignDestinationUp && foreignHero.y > foreignDestinationUp){
+              while (foreignHero.y > foreignDestinationUp){
+                foreignHero.y-= 5;
+                if (foreignHero.y - 5 < foreignDestinationUp){
+                  foreignHero.y = foreignDestinationUp
+                }
+              }
+              if (foreignDestinationUp && foreignLastAction != "up"){
+                foreignHero.body.gotoAndPlay("runUpDown");
+                foreignHero.body.scaleY = -1;
+                foreignLastAction = "up"
+              };
+          };
+          if (hereTime + 250 < timeElapsed){
+            foreignHero.body.gotoAndStop("stand");
+          };
+        };
+        }
 
         createjs.Ticker.timingMode = createjs.Ticker.RAF;
         createjs.Ticker.setFPS(40);

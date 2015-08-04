@@ -76,8 +76,8 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL, N
         var northwall = new createjs.Bitmap(NORTHWALL);
         northwall.x = cell.x
         northwall.y = cell.y
-        northwall.width = 100;
-        northwall.height = 100;
+        northwall.width = 120;
+        northwall.height = 120;
         grid.addChildAt(northwall, 1);
         walls.push(northwall);
       }
@@ -85,8 +85,8 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL, N
         var southwall = new createjs.Bitmap(SOUTHWALL);
         southwall.x = cell.x
         southwall.y = cell.y
-        southwall.width = 100;
-        southwall.height = 100;
+        southwall.width = 120;
+        southwall.height = 120;
         grid.addChildAt(southwall, 2);
         walls.push(southwall);
       }
@@ -94,8 +94,8 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL, N
         var eastwall = new createjs.Bitmap(EASTWALL);
         eastwall.x = cell.x
         eastwall.y = cell.y
-        eastwall.width = 100;
-        eastwall.height = 100;
+        eastwall.width = 120;
+        eastwall.height = 120;
         grid.addChildAt(eastwall, 3);
         walls.push(eastwall);
       }
@@ -103,8 +103,8 @@ function Grid_drawCells(grid, FLOOR, NORTHWALL, SOUTHWALL, EASTWALL, WESTWALL, N
         var westwall = new createjs.Bitmap(WESTWALL);
         westwall.x = cell.x
         westwall.y = cell.y
-        westwall.width = 100;
-        westwall.height = 100;
+        westwall.width = 120;
+        westwall.height = 120;
         grid.addChildAt(westwall, 4);
         walls.push(westwall);
       }

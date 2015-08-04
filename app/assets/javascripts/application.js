@@ -24,7 +24,6 @@
 //= require easeljs-0.8.1.min
 //= require preloadjs-0.6.1.min
 //= require ndgmr.Collision.js
-//= require ./games/win.js
 //= require ./games/create_subclass.js
 //= require ./games/actions.js
 //= require ./games/hero.js
