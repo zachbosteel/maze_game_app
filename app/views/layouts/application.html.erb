@@ -29,7 +29,6 @@
         <li><%= link_to "Sign In", "/players/sign_in" if not current_player %></li>
         <% if current_player %>
           <li class="play_now"><%= link_to "Play Now!", "/games" %></li>
-          <li><%= link_to "Profile", "/profiles/#{current_player.id}" %></li>
         <% else %>
           <li class="play_now"><%= link_to "Play Now!", "/players/sign_in" %></li>
         <% end %>
