@@ -1,10 +1,12 @@
-<div class="container" ng-app="app">
+<div class="container" ng-app="app" id="gamelobbycont">
   <div ng-controller="game_form_ctrl" ng-init="setup('<%= current_player.screen_name %>')">
     <div class="row" id="top_chatroom_row">
     <div class="col-md-5 col-md-offset-2 col-sm-8 col-xs-8" id="game_form">
+      <div id="overlay">
       <div id="current_game_list" ng-if="!creatingGame">
+        <h3>Join a Game Below:</h3>
         <div id="joinable_games">
-        <ul>
+        <ul class="join-game">
           <li ng-repeat="game in joinableGames track by $index" ng-click="joinGame(game, <%= current_player.id %>)" class="join-game">Join {{game.playerOne.info.name}}'s Game</li>
         </ul>
         </div>
@@ -12,11 +14,13 @@
       </div>
       <div id="create_game" ng-if="creatingGame">
         <ul>
-          <li>Player 1: {{currentGame.playerOne.info.name}}</li>
-          <li ng-if="currentGame.playerTwo">Player 2: {{currentGame.playerTwo.info.name}}</li>
+          <li class="player">Player 1: {{currentGame.playerOne.info.name}}</li>
+          <li class="player" ng-if="!currentGame.playerTwo">Waiting on second player...</li>
+          <li class="player" ng-if="currentGame.playerTwo">Player 2: {{currentGame.playerTwo.info.name}}</li>
         </ul>
         <button ng-if="currentGame.playerTwo" ng-click="startGame(currentGame)" id="start" class="myButton2">Start Game</button>
         <button ng-click="cancelGame()" id="cancel" class="myButton2">Cancel</button>
+      </div>
       </div>
     </div>
     <div class="col-md-2 pull-right">

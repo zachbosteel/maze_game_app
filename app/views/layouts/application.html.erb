@@ -18,19 +18,19 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">The Great Maze Escape</a>
+      <a class="navbar-brand" href="/"><img src="<%= image_path('navbarlogo.png')%>" id="navbarlogo"></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><%= link_to "Sign Out", "/players/sign_out", method: :delete if current_player %></li> 
+        <li class="active" id="firstlink"><%= link_to "Sign Out", "/players/sign_out", method: :delete if current_player %></li> 
         <li><%= link_to "Sign Up", "/players/sign_up" if not current_player %></li> 
         <li><%= link_to "Sign In", "/players/sign_in" if not current_player %></li>
         <% if current_player %>
-          <li class="play_now"><%= link_to "Play Now!", "/games" %></li>
+          <li id="playnow"><%= link_to "Play Now!", "/games" %></li>
         <% else %>
-          <li class="play_now"><%= link_to "Play Now!", "/players/sign_in" %></li>
+          <li id="playnow"><%= link_to "Play Now!", "/players/sign_in" %></li>
         <% end %>
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
